@@ -1,16 +1,16 @@
 # trashdb
 
-zf180516.1856
+zf1805117.1523
 
-Trouver un moyen d'avoir une *cloud DB* qui me permet de sauvegarder pleins de données temporelles ou non !
+*Trouver un moyen d'avoir une *cloud DB* qui me permet de sauvegarder pleins de données temporelles ou non !*
 
 ## Buts
 
 J'ai pleins de *petites* données qui arrivent de différents endroits au cours du temps, comme par exemple qu'elle est la température de mon stock solaire d'eau chaude, ou quand est-ce que mon chauffage s'est allumé, ma puissance électrique consommée au temps t. Ou plus personnel, mon poids ou ma pression artérielle, quand j'ai le temps de les mesurer ;-)
 
-Si je me concentre que sur des données *métriques*, une approche Prometheus ou Influxdb est nettement plus adaptée pour faire cette database. Mais si j'ai envie de pouvoir sauver autre chose comme données, une approche noSQL est plus pertinente.
+Si je me concentre que sur des données *métriques*, une approche Prometheus ou Influxdb est nettement plus adaptée pour faire cette base de données. Mais si j'ai envie de pouvoir sauver autre chose comme données, une approche noSQL est plus pertinente.
 
-C'est pourquoi j'ai nommé ce projet *trashDB*, une DB fourre tout sans a priori, pour pouvoir sauver un peu n'importe quoi comme *petites* données ;-)
+C'est pourquoi j'ai nommé ce projet *trashDB*, une DB fourre tout sans a priori, pour pouvoir sauver un peu n'importe quoi comme données ;-)
 
 ## Moyens
 
@@ -22,13 +22,15 @@ Après plusieurs recherches sur Internet mon choix s'est porté sur la DB *Couch
 
 CouchDB présente pas mal d'avantages:
 * entrées/sorties en HTML/JSON, utilisable très facilement avec un *curl*
+* travail en JSON, superbe liberté au niveau du schéma de la DB
 * interface d'administration en HTML out of the box
-* synchronisation des serveurs CouchDB très simple, travail off line ou pour les backups par exemple
-* possibilité de synchroniser off line sur un smartphone grâce à Pounchdb (https://pouchdb.com/)
+* synchronisation/réplication entre serveurs CouchDB très simple, travail off line ou pour les backups par exemple
+* système de version des enregistrements, tout s'écrit, rien ne s'efface
+* possibilité de synchroniser off line sur un smartphone grâce à Pounchdb
 * léger et hyper simple à installer via un Docker
 
 ### Installation
-Je vais le tester dans un mode de container Docker:
+Je vais le faire tourner dans un container Docker:
 
 <https://hub.docker.com/r/library/couchdb/>
 
@@ -110,5 +112,30 @@ Quand même sympa comme database ;-)
 ## Et la suite ?
 
 Après, je verrai si je testerai d'autres solutions ;-)
+
+Comme par exemple Cozy.io qui est un service CouchDB gratuit jusqu'à 5GB
+
+
+# Sources d'inspiration
+
+## CouchDB
+
+
+
+## JSON
+
+
+## PouchDB
+PouchDB permet d'avoir une mini DB JSON sur son smartphone et de pouvoir la synchroniser avec une DB CouchDB très facilement.
+
+https://pouchdb.com/
+
+
+## Mango
+A MongoDB inspired query language interface for Apache CouchDB
+
+https://github.com/cloudant/mango
+
+
 
 En voiture Simone !
