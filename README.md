@@ -1,6 +1,6 @@
 # trashdb
 
-zf1805117.1523
+zf180523.1839
 
 *Trouver un moyen d'avoir une *cloud DB* qui me permet de sauvegarder pleins de données temporelles ou non !*
 
@@ -34,9 +34,13 @@ Je vais le faire tourner dans un container Docker:
 
 <https://hub.docker.com/r/library/couchdb/>
 
-Il faut donc juste installer Docker sur sa machine:
-
 https://www.docker.com/community-edition
+
+Il faut donc juste installer Docker sur sa machine avec:
+
+./install.sh
+
+Ne pas oublier de faire un logoff/logon afin de tenir compte des modifications des groupes !
 
 et peut-être installer sur les machines *clientes*, donc où on fait les *curls*, un petit *viewer* de JSON tout simple pour se faciliter la vue des résultats JSON:
 
@@ -55,7 +59,7 @@ Simplement démarrer le script start.sh:
 
 ### Hello World
 
-On regarde déjà si le serveur CouchDB fonctionne avec:
+On regarde déjà si le serveur CouchDB fonctionne avec (attention, il faut attendre environ 2 minutes afin que CouchDB se chauffe un peu):
 
 ``curl -X GET http://localhost:5984``
 
