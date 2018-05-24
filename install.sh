@@ -1,15 +1,13 @@
 #!/bin/bash
 #Petit script pour installer tout le binz
-#zf180523.1825
-# source: https://hub.docker.com/r/library/couchdb/ et http://couchdb.apache.org/
+#zf180524.1049
+# source: https://doc.ubuntu-fr.org/docker
 
 sudo apt-get update
+sudo apt-get install python-minimal
 ./install_docker.sh
 sudo usermod -aG docker ubuntu
 
-echo "vous devez faire un logoff/logon pour que cela soit en fonction !"
-
-
-
-
-
+echo ""
+echo "vous devez faire un logoff/logon pour que les modifications de groups fonctionne !"
+echo ""
