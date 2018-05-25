@@ -208,7 +208,7 @@ Pour cette exemple on va se créer une nouvelle base de données et mettre quelq
 
 Puis après depuis le GUI on va créer un *design document* de type *view* que l'on nommera *_design/vgamme* et *byusers* avec comme données:
 
-```
+```javascript
 function (doc) {
   if(doc.user && doc.score && doc.time) {
     emit(doc.user, doc.score);
@@ -222,7 +222,7 @@ Après il sera très facile de demander les données du joueur *toto* avec:
 
 Pour bien comprendre, on peut aussi faire un autre *design document* de type *view* que l'on nommera *_design/vgamme* et *byscores* avec comme données:
 
-```
+```javascript
 function (doc) {
   if(doc.user && doc.score && doc.time) {
     emit(doc.score,doc.user);
