@@ -42,78 +42,78 @@ https://www.docker.com/community-edition
 
 Il faut donc juste installer Docker sur sa machine avec:
 
-./install.sh
+`./install.sh`
 
 Ne pas oublier de faire un *logoff/logon* afin de tenir compte des modifications des groupes !
 
 et peut-être installer sur les machines *clientes*, donc où on fait les *curls*, un petit *viewer* de JSON tout simple pour se faciliter la vue des résultats JSON:
 
-``sudo apt-get install python-minimal``
+`sudo apt-get install python-minimal`
 
 Afin de pouvoir faire un truc du style:
 
-``curl -X GET http://localhost:5984/toto | python -m json.tool``
+`curl -X GET http://localhost:5984/toto | python -m json.tool`
 
 
 ### Utilisation
 Simplement démarrer le script *start.sh* qui va démarrer un serveur CouchDB dans un Docker et sauvegarder les données sur le disque du host:
 
-``./start.sh``
+`./start.sh`
 
 
 ### Hello World
 
 On regarde déjà si le serveur CouchDB fonctionne avec (attention, il faut attendre environ 2 minutes afin que CouchDB se mette en place):
 
-``curl -X GET http://localhost:5984``
+`curl -X GET http://localhost:5984`
 
 Et on obtient un truc du style:
 
-``"couchdb":"Welcome","version":"2.1.1","features":["scheduler"],"vendor":{"name":"The Apache Software Foundation"}}``
+`"couchdb":"Welcome","version":"2.1.1","features":["scheduler"],"vendor":{"name":"The Apache Software Foundation"}}`
 
 Après on peut se créer la database *dbtoto* avec:
 
-``curl -X PUT http://localhost:5984/dbtoto``
+`curl -X PUT http://localhost:5984/dbtoto`
 
 Et vérifier que l'on a bien la database *toto* avec:
 
-``curl -X GET http://localhost:5984/_all_dbs``
+`curl -X GET http://localhost:5984/_all_dbs`
 
 Et enfin on peut lui ajouter un *record* (dans la terminologie CouchDB un *record* est un *document*) à *dbtoto* avec:
 
-``curl -H 'Content-Type: application/json' -X POST http://localhost:5984/dbtoto -d '{"toto": "1234"}'``
+`curl -H 'Content-Type: application/json' -X POST http://localhost:5984/dbtoto -d '{"toto": "1234"}'`
 
 Ici on a laissé CouchDB générer un *_id* automatiquement, mais on peut choisir son propre *_id*, pour autant qu'il soit unique comme par exemple:
 
-``curl -H 'Content-Type: application/json' -X POST http://localhost:5984/dbtoto -d '{"_id": "id001", "toto": "1234"}'``
+`curl -H 'Content-Type: application/json' -X POST http://localhost:5984/dbtoto -d '{"_id": "id001", "toto": "1234"}'`
 
 ou avec un *_id* temporel comme:
 
-``curl -H 'Content-Type: application/json' -X POST http://localhost:5984/dbtoto -d '{"_id": "180516.182710.00", "toto": "1234"}'``
+`curl -H 'Content-Type: application/json' -X POST http://localhost:5984/dbtoto -d '{"_id": "180516.182710.00", "toto": "1234"}'`
 
 Je peux *lire* le résultat en lui donnant un *_id*, par exemple:
 
-``curl -X GET http://localhost:5984/dbtoto/id001``
+`curl -X GET http://localhost:5984/dbtoto/id001`
 
 Pour modifier un *record* il faut en premier lire la *révision* du record pour pouvoir le modifier, ceci permet de vérifier les conflits en écriture et de pouvoir garder l'intégrité de la data base. Donc on lit le *record* *id001* que l'on veut modifier:
 
-``curl -X GET http://localhost:5984/dbtoto/id001``
+`curl -X GET http://localhost:5984/dbtoto/id001`
 
 On obtient un truc du style:
 
-``{"_id":"id001","_rev":"2-8198c0bf1c8d51fc138e520045906e33","toto":"1234"}``
+`{"_id":"id001","_rev":"2-8198c0bf1c8d51fc138e520045906e33","toto":"1234"}`
 
 Et on modifie alors le *record* *id001* avec:
 
-``curl -X PUT http://localhost:5984/dbtoto/id001 -d '{ "toto" : "234","_rev":"xxxx"}'``
+`curl -X PUT http://localhost:5984/dbtoto/id001 -d '{ "toto" : "234","_rev":"xxxx"}'`
 
 On peut vérifier que la modification est bien effectuée avec:
 
-``curl -X GET http://localhost:5984/dbtoto/id001``
+`curl -X GET http://localhost:5984/dbtoto/id001`
 
 Pour effacer ce document il faut à nouveau récupérer sa *révision* et faire:
 
-``curl -X DELETE http://localhost:5984/dbtoto/id001?rev=xxx``
+`curl -X DELETE http://localhost:5984/dbtoto/id001?rev=xxx`
 
 Pour la suite du Hello World, nous avons besoin de quelques documents que nous allons rapidement créer avec:
 
@@ -126,33 +126,33 @@ curl -H 'Content-Type: application/json' -X POST http://localhost:5984/dbtoto -d
 
 Pour voir tous les documents de la data base *dbtoto* (Attention il faut mettre des *'* autour de l'url !):
 
-``curl -X GET 'http://localhost:5984/dbtoto/_all_docs'``
+`curl -X GET 'http://localhost:5984/dbtoto/_all_docs'`
 
 Pour voir tous les documents de la data base *dbtoto*, mais en détail:
 
-``curl -X GET http://localhost:5984/dbtoto/_all_docs?include_docs=true``
+`curl -X GET http://localhost:5984/dbtoto/_all_docs?include_docs=true`
 
 Pour voir tous les documents de la data base *dbtoto* en détail mais en ordre inverse:
 
-``curl -X GET 'http://localhost:5984/dbtoto/_all_docs?include_docs=true&descending=true'``
+`curl -X GET 'http://localhost:5984/dbtoto/_all_docs?include_docs=true&descending=true'`
 
 Pour voir seulement un range d'*id* des documents de la data base *dbtoto*:
 
-``curl -X GET 'http://localhost:5984/dbtoto/_all_docs?startkey="id002"&endkey="id003"'``
+`curl -X GET 'http://localhost:5984/dbtoto/_all_docs?startkey="id002"&endkey="id003"'`
 
 Pour voir seulement depuis un *id* les *n* documents de la data base *dbtoto*:
 
-``curl -X GET 'http://localhost:5984/dbtoto/_all_docs?startkey="id002"&limit=2'``
+`curl -X GET 'http://localhost:5984/dbtoto/_all_docs?startkey="id002"&limit=2'`
 
 Maintenant que nous avons bien vu les commandes *curl* nous allons passer au GUI de CouchDB *out the box* en mettant dans un browser:
 
-``http://localhost:5984/_utils``
+`http://localhost:5984/_utils`
 
 Dans CouchDB tout s'écrit rien ne s'efface ! Ceci grâce au flag des révisions des documents *_rev*. Nous allons ici tester cette fonctionnalité pour cela nous allons modifier plusieurs fois le document *id001* avec le GUI de CouchDB.
 
 Puis on peut afficher toutes les versions de ce document:
 
-``curl -X GET 'http://localhost:5984/dbtoto/id001?revs_info=true'``
+`curl -X GET 'http://localhost:5984/dbtoto/id001?revs_info=true'`
 
 On va avoir un truc du style:
 
@@ -183,34 +183,34 @@ status	"available"
 
 Après pour *voir* la version demandée du document on fait:
 
-``curl -X GET 'http://localhost:5984/dbtoto/id001?rev=4-0ae74a0d88d70d24c335a32003ef64d0'``
+`curl -X GET 'http://localhost:5984/dbtoto/id001?rev=4-0ae74a0d88d70d24c335a32003ef64d0'`
 
 Travailler avec les vues.
 
 Les vues sont simplement une représentation d'une table de documents sous forme de clefs valeurs en fonction d'un critère. Après il est possible de faire une recherche dans cette vue pour obtenir le document.
 Par exemple, une base de données qui stocke les scores fait par les joueurs pour un jeux, on aura une structure de document du style:
 
-``id, user, score``
+`id, user, score`
 
 Pour pouvoir rechercher le score d'un joueur, il faudra faire une table clefs valeurs user:score. User devenant alors la clef de cette table et il sera facile d'extraire le document contenant le joueur demandé. Les vues sont toujours triées par la clef !
 
 Pour cette exemple on va se créer une nouvelle base de données et mettre quelques données avec
 
-``curl -X PUT http://localhost:5984/dbgame``
+`curl -X PUT http://localhost:5984/dbgame`
 
-``curl -H 'Content-Type: application/json' -X POST http://localhost:5984/dbgame -d '{"user":"toto","score":"1234","time":"1234"}'``
+`curl -H 'Content-Type: application/json' -X POST http://localhost:5984/dbgame -d '{"user":"toto","score":"1234","time":"1234"}'`
 
-``curl -H 'Content-Type: application/json' -X POST http://localhost:5984/dbgame -d '{"user":"tutu","score":"2345","time":"12345"}'``
+`curl -H 'Content-Type: application/json' -X POST http://localhost:5984/dbgame -d '{"user":"tutu","score":"2345","time":"12345"}'`
 
-``curl -H 'Content-Type: application/json' -X POST http://localhost:5984/dbgame -d '{"user":"titi","score":"3456","time":"123456"}'``
+`curl -H 'Content-Type: application/json' -X POST http://localhost:5984/dbgame -d '{"user":"titi","score":"3456","time":"123456"}'`
 
-``curl -H 'Content-Type: application/json' -X POST http://localhost:5984/dbgame -d '{"user":"tata","score":"4567","time":"1234567"}'``
+`curl -H 'Content-Type: application/json' -X POST http://localhost:5984/dbgame -d '{"user":"tata","score":"4567","time":"1234567"}'`
 
 Puis après depuis le GUI on va créer un *design document* de type *view* que l'on nommera *_design/vgamme* et *byusers* avec comme données:
 
 ```
 function (doc) {
-    if(doc.user && doc.score && doc.time) {
+  if(doc.user && doc.score && doc.time) {
     emit(doc.user, doc.score);
   }
 }
@@ -218,14 +218,14 @@ function (doc) {
 
 Après il sera très facile de demander les données du joueur *toto* avec:
 
-``curl -X GET 'http://localhost:5984/dbgame/_design/vgame/_view/byusers?key="toto"'``
+`curl -X GET 'http://localhost:5984/dbgame/_design/vgame/_view/byusers?key="toto"'`
 
 Pour bien comprendre, on peut aussi faire un autre *design document* de type *view* que l'on nommera *_design/vgamme* et *byscores* avec comme données:
 
 ```
 function (doc) {
-    if(doc.user && doc.score && doc.time) {
-    emit(doc.score,doc.user );
+  if(doc.user && doc.score && doc.time) {
+    emit(doc.score,doc.user);
   }
 }
 ```
