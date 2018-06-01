@@ -2,11 +2,11 @@
 
 zf180524.1536
 
-*Trouver un moyen d'avoir une *cloud DB* qui me permet de sauvegarder pleins de données temporelles ou non !*
+*Trouver un moyen d'avoir une *cloud DB* qui me permet de sauvegarder plein de données temporelles ou non !*
 
 ## Buts
 
-J'ai pleins de *petites* données qui arrivent de différents endroits au cours du temps, comme par exemple qu'elle est la température de mon stock solaire d'eau chaude, ou quand est-ce que mon chauffage s'est allumé, ma puissance électrique consommée au temps t. Ou plus personnel, mon poids ou ma pression artérielle, quand j'ai le temps de les mesurer ;-)
+J'ai plein de *petites* données qui arrivent de différents endroits au cours du temps, comme par exemple quelle est la température de mon stock solaire d'eau chaude, ou quand est-ce que mon chauffage s'est allumé, ma puissance électrique consommée au temps *t*. Ou plus personnel, mon poids ou ma pression artérielle, quand j'ai le temps de les mesurer ;-)
 
 Si je me concentre que sur des données *métriques*, une approche Prometheus ou Influxdb est nettement plus adaptée pour faire cette base de données. Mais si j'ai envie de pouvoir sauver autre chose comme données, une approche noSQL est plus pertinente.
 
@@ -26,7 +26,7 @@ CouchDB présente pas mal d'avantages:
 * interface d'administration en HTML out of the box
 * synchronisation/réplication entre serveurs CouchDB très simple, travail off line ou pour les backups par exemple
 * système de version des enregistrements, tout s'écrit, rien ne s'efface
-* possibilité de synchroniser off line sur un smartphone grâce à Pounchdb
+* possibilité de synchroniser off line sur un smartphone grâce à PouchDB
 * léger et hyper simple à installer via un Docker
 
 En savoir plus sur CouchDB:
@@ -148,7 +148,7 @@ Maintenant que nous avons bien vu les commandes *curl* nous allons passer au GUI
 
 ``http://localhost:5984/_utils``
 
-Dans CouchDB tout s'écrit rien ne s'efface ! Ceci grâce au flag des révisions des documents *_rev*. Nous allons ici tester cette fonctionnalité pour cela nous allons modifier plusieurs fois le document *id001* avec le GUI de CouchDB.
+Dans CouchDB tout s'écrit, rien ne s'efface ! Ceci grâce au flag des révisions des documents *_rev*. Nous allons ici tester cette fonctionnalité. Pour cela nous allons modifier plusieurs fois le document *id001* avec le GUI de CouchDB.
 
 Puis on peut afficher toutes les versions de ce document:
 
@@ -185,14 +185,14 @@ Après pour *voir* la version demandée du document on fait:
 
 ``curl -X GET 'http://localhost:5984/dbtoto/id001?rev=4-0ae74a0d88d70d24c335a32003ef64d0'``
 
-Travailler avec les vues.
+### Travailler avec les vues
 
-Les vues sont simplement une représentation d'une table de documents sous forme de clefs valeurs en fonction d'un critère. Après il est possible de faire une recherche dans cette vue pour obtenir le document.
+Les vues sont simplement une représentation d'une table de documents sous forme de clefs-valeurs en fonction d'un critère. Après il est possible de faire une recherche dans cette vue pour obtenir le document.
 Par exemple, une base de données qui stocke les scores fait par les joueurs pour un jeux, on aura une structure de document du style:
 
 ``id, user, score``
 
-Pour pouvoir rechercher le score d'un joueur, il faudra faire une table clefs valeurs user:score. User devenant alors la clef de cette table et il sera facile d'extraire le document contenant le joueur demandé. Les vues sont toujours triées par la clef !
+Pour pouvoir rechercher le score d'un joueur, il faudra faire une table clefs-valeurs user:score. User devenant alors la clef de cette table et il sera facile d'extraire le document contenant le joueur demandé. Les vues sont toujours triées par la clef !
 
 Pour cette exemple on va se créer une nouvelle base de données et mettre quelques données avec
 
